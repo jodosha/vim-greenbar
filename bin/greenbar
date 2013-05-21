@@ -1,0 +1,9 @@
+#!/bin/bash
+
+file=".greenbar"
+command=( $@ )
+${command[@]}
+exit_code=$?
+
+printf "$exit_code\t$(date +%s)\n$(cat $file)" > $file
+exit $exit_code
