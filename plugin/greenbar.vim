@@ -56,12 +56,11 @@ if !exists("g:tmux_session")
   let g:tmux_session = s:is_within_tmux()
 endif
 
-if g:tmux_session == 0
-  autocmd ShellCmdPost * call greenbar#set_statusline()
-endif
+autocmd ShellCmdPost * call greenbar#set_statusline()
 
-" override function from dispatch-vim
-function! dispatch#complete(id)
+" HACK override function from dispatch-vim
+" Only open result pane if the test was failed
+function! dispatch#complete(...)
   if !greenbar#set_statusline()
     exec ":Copen"
   endif
