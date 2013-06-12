@@ -16,6 +16,10 @@ function! s:is_green()
   return readfile(g:greenbar_file, '', 1)[0][0] == 0
 endfunction
 
+function! s:is_within_tmux()
+  return len($TMUX) > 0
+endfunction
+
 function! greenbar#set_statusline()
   let green = s:is_green()
   if green
@@ -44,6 +48,14 @@ nnoremap <silent> <Plug>SendFocusedTestToGreenbar :<C-U>w \| call SendFocusedTes
 if !exists("g:no_greenbar_mappings")
   nmap <leader>t <Plug>SendTestToGreenbar
   nmap <leader>T <Plug>SendFocusedTestToGreenbar
+endif
+
+if !exists("g:tmux_session")
+  let g:tmux_session = s:is_within_tmux()
+endif
+
+if g:tmux_session == 0
+  autocmd ShellCmdPost * call greenbar#set_statusline()
 endif
 
 " override function from dispatch-vim
